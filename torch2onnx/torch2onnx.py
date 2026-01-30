@@ -16,7 +16,7 @@ import subprocess
 from pathlib import Path
 
 # General Config
-MODEL_CKPT = '/home/paiworker1/KX/.Workspace/.Projects/yolov8n-pose.pt'
+MODEL_CKPT = '/home/paiworker1/KX/.Workspace/.Projects/mcd/mcd_290126.pt'
 MODEL_TYPE = 'YOLOv8'; assert MODEL_TYPE in ['ActionMM2', 
                                                 'YOLOv8',
                                                 'YOLO26',
@@ -27,7 +27,7 @@ MODEL_TYPE = 'YOLOv8'; assert MODEL_TYPE in ['ActionMM2',
                                                 'APGCC']
 
 # Only for Yolov8/Yolo26
-TASK = 'POS'; assert TASK in ['CLS', 'DET', 'SEG', 'POS'] # Classification, Detection, Segmentation, Pose-Estimation
+TASK = 'DET'; assert TASK in ['CLS', 'DET', 'SEG', 'POS'] # Classification, Detection, Segmentation, Pose-Estimation
 IMGSZ = (640, 640)
 
 # Only for YoloE
