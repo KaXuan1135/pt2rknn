@@ -3,6 +3,7 @@
 # torchreid : osnet / p2pnet / apgcc
 # yolo_rknn : yolov8 / yolo26
 # mmdeploy  : actionmm2
+# tf_train  : mobilenetv2
 
 import os
 import sys
@@ -16,15 +17,16 @@ import subprocess
 from pathlib import Path
 
 # General Config
-MODEL_CKPT = '/home/paiworker1/KX/.Workspace/.Projects/mcd/mcd_290126.pt'
-MODEL_TYPE = 'YOLOv8'; assert MODEL_TYPE in ['ActionMM2', 
+MODEL_CKPT = '/home/paiworker1/KX/.Workspace/.Projects/PianoTag/PY_SE_mobilenetv2_0.5_0.8603.pth'
+MODEL_TYPE = 'MobileNetV2'; assert MODEL_TYPE in ['ActionMM2', 
                                                 'YOLOv8',
                                                 'YOLO26',
                                                 'YOLOE', # deprecated
                                                 'OSNet', 
                                                 'PaddleOCR', 
                                                 'P2PNet',
-                                                'APGCC']
+                                                'APGCC',
+                                                'MobileNetV2']
 
 # Only for Yolov8/Yolo26
 TASK = 'DET'; assert TASK in ['CLS', 'DET', 'SEG', 'POS'] # Classification, Detection, Segmentation, Pose-Estimation
@@ -61,6 +63,9 @@ INPUT_SIZE_P2P = [6, 3, 1024, 1280]
 # Only for APGCC
 BACKBONE_CKPT = '/home/paiworker1/KX/.Workspace/.Projects/crowd_count/APGCC-ONNX/weights/vgg16_bn-6c64b313.pth'
 INPUT_SIZE_APGCC = [6, 3, 640, 800]
+
+# Only for MobileNetV2
+INPUT_SIZE_MOBILENETV2 = [1, 3, 32, 32]
 
 if MODEL_TYPE in ['YOLOv8', 'YOLO26']:
     from ultralytics import YOLO
@@ -370,3 +375,11 @@ elif MODEL_TYPE == 'APGCC':
     assert check, 'assert check failed'
 
     onnx.save(onnx_model,model_name)
+
+elif MODEL_TYPE == 'MobileNetV2':
+    model = torch.load(MODEL_CKPT, weights_only=False).cpu()
+    model_name = MODEL_CKPT.replace('pth', 'onnx')
+
+    input_data = torch.randn(*INPUT_SIZE_MOBILENETV2).cpu() # Match your input_shape
+    
+    torch.onnx.export(model, input_data, model_name, opset_version=17)

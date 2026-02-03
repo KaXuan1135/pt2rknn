@@ -11,7 +11,7 @@ DATASET_PATH = '/home/paiworker1/KX/.Workspace/.Data/calib.txt'
 
 # Convertion Settings
 PLATFORM = 'rk3588'; assert PLATFORM in ['rk3588', 'rv1126b']
-ONNX_PATH = '/home/paiworker1/KX/.Workspace/.Projects/mcd/mcd_290126.onnx'
+ONNX_PATH = '/home/paiworker1/KX/.Workspace/.Projects/PianoTag/PY_SE_mobilenetv2_0.5_0.8603.onnx'
 RKNN_PATH = os.path.splitext(ONNX_PATH)[0] + ('_u8' if DO_QUANT else '_fp16') + (f'_{PLATFORM}') + '.rknn'
 
 ENABLE_DYNAMIC_INPUT = False
